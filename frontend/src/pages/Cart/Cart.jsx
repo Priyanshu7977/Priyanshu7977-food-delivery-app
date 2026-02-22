@@ -4,12 +4,24 @@ import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount } = useContext(StoreContext);
+
+  const { 
+    cartItems, 
+    food_list, 
+    removeFromCart, 
+    addToCart, 
+    getTotalCartAmount 
+  } = useContext(StoreContext);
 
   const navigate = useNavigate();
 
+  const subtotal = getTotalCartAmount();
+  const delivery = subtotal === 0 ? 0 : 5;
+  const total = subtotal + delivery;
+
   return (
     <div className='cart'>
+
       <div className="cart-items">
         <div className="cart-items-title">
           <p>Items</p>
@@ -19,60 +31,89 @@ const Cart = () => {
           <p>Total</p>
           <p>Remove</p>
         </div>
-        <br />
+
         <hr />
 
-        {food_list.map((item, index) => {
+        {food_list.map((item) => {
           if (cartItems[item._id] > 0) {
             return (
-              <div>
-                <div className='cart-item-title cart-items-item'>
+              <div key={item._id}>
+                <div className='cart-items-item'>
+
                   <img src={item.image} alt="" />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
-                  <p>{cartItems[item._id]}</p>
+
+                  {/* QUANTITY CONTROL */}
+                  <div className="quantity-control">
+                    <button 
+                      onClick={() => removeFromCart(item._id)}
+                    >
+                      -
+                    </button>
+
+                    <span>{cartItems[item._id]}</span>
+
+                    <button 
+                      onClick={() => addToCart(item._id)}
+                    >
+                      +
+                    </button>
+                  </div>
+
                   <p>${item.price * cartItems[item._id]}</p>
-                  <p onClick={()=>removeFromCart(item._id)}  className='cross'>X</p>
+
+                  <p 
+                    onClick={() => removeFromCart(item._id)} 
+                    className='cross'
+                  >
+                    X
+                  </p>
+
                 </div>
                 <hr />
               </div>
             )
           }
-
+          return null;
         })}
+
       </div>
+
+
       <div className="cart-bottom">
+
         <div className="cart-total">
           <h2>Cart Total</h2>
-          <div>
-            <div className="cart-total-details">
-              <p>Subtotal</p>
-              <p>${getTotalCartAmount()}</p>
-            </div>
-            <hr />
-            <div className="cart-total-details">
-            <p>Delivery Fee</p>
-            <p>${getTotalCartAmount()===0?0:5}</p>
-            </div>
-            <hr />
-            <div className="cart-total-details">
-              <b>Total</b>
-              <b>${getTotalCartAmount()===0?0:getTotalCartAmount()+5}</b>
-            </div>
-          </div>
-          <button onClick={()=>navigate('/order')}  >PROCEED TO CHECKOUT</button>
-        </div>
-        <div className="cart-promocode">
-          <div>
-            <p>If you have a promo code, Enter it here!!</p>
-            <div className='cart-promocode-input'>
-              <input type="text" placeholder='Promo code' />
-              <button>Submit</button>
 
-            </div>
+          <div className="cart-total-details">
+            <p>Subtotal</p>
+            <p>${subtotal}</p>
           </div>
+
+          <div className="cart-total-details">
+            <p>Delivery Fee</p>
+            <p>${delivery}</p>
+          </div>
+
+          <hr />
+
+          <div className="cart-total-details">
+            <b>Total</b>
+            <b>${total}</b>
+          </div>
+
+          <button 
+            disabled={subtotal === 0}
+            onClick={() => navigate('/order')}
+          >
+            {subtotal === 0 ? "CART IS EMPTY" : "PROCEED TO CHECKOUT"}
+          </button>
+
         </div>
+
       </div>
+
     </div>
   );
 };

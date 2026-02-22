@@ -1,98 +1,99 @@
 import React, { useContext, useState } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/assets';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 
 const Navbar = ({ setShowLogin, user, setUser }) => {
 
-    const [menu, setMenu] = useState("Home");
     const { getTotalCartAmount } = useContext(StoreContext);
+    const location = useLocation();
+    const [activeMenu, setActiveMenu] = useState("");
+
+    const handleScrollToMenu = () => {
+        const section = document.getElementById("explore-menu");
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+        setActiveMenu("menu");
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        setUser(null);
+    };
 
     return (
         <div className='navbar'>
-            
-            <Link to="/">
+
+            {/* Logo */}
+            <NavLink to="/home">
                 <img src={assets.logo} alt="Tomato Logo" className="logo" />
-            </Link>
+            </NavLink>
 
             <ul className="navbar-menu">
+
+                {/* Home */}
                 <li>
-                    <Link 
-                        to='/' 
-                        onClick={() => setMenu("Home")} 
-                        className={menu === "Home" ? "active" : ""}
+                    <NavLink
+                        to="/home"
+                        end
+                        className={({ isActive }) =>
+                            isActive && activeMenu !== "menu" ? "active" : ""
+                        }
+                        onClick={() => setActiveMenu("")}
                     >
                         Home
-                    </Link>
+                    </NavLink>
                 </li>
 
+                {/* Menu */}
                 <li>
-                    <a 
-                        href='#explore-menu'
-                        onClick={() => setMenu("Menu")}
-                        className={menu === "Menu" ? "active" : ""}
+                    <span
+                        onClick={handleScrollToMenu}
+                        className={activeMenu === "menu" ? "active" : ""}
                     >
                         Menu
-                    </a>
+                    </span>
                 </li>
 
+                {/* Contact */}
                 <li>
-                    <a 
-                        href='#app-download'
-                        onClick={() => setMenu("Mobile app")}
-                        className={menu === "Mobile app" ? "active" : ""}
+                    <NavLink
+                        to="/about"
+                        className={({ isActive }) =>
+                            isActive ? "active" : ""
+                        }
+                        onClick={() => setActiveMenu("")}
                     >
-                        Mobile app
-                    </a>
+                        Contact
+                    </NavLink>
                 </li>
 
-                <li>
-                    <a 
-                        href='#footer'
-                        onClick={() => setMenu("Contact us")}
-                        className={menu === "Contact us" ? "active" : ""}
-                    >
-                        Contact us
-                    </a>
-                </li>
             </ul>
 
+            {/* Right Section */}
             <div className="navbar-right">
 
-                <Link to='/'><img src={assets.search_icon} alt="Search Icon" /></Link>
-
-                <div className="navbar-search-icon">
-                    <Link to='/cart'>
-                        <img src={assets.basket_icon} alt="" />
-                    </Link>
-                    <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
+                <div className="cart-icon">
+                    <NavLink to='/cart'>
+                        <img src={assets.basket_icon} alt="Cart" />
+                    </NavLink>
+                    {getTotalCartAmount() !== 0 && <div className="cart-dot"></div>}
                 </div>
 
                 {user ? (
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <p style={{ fontWeight: "bold" }}>
-                            👋 Welcome {user}
-                        </p>
-                        <button
-                            onClick={() => {
-                                localStorage.removeItem("user");
-                                setUser(null);
-                            }}
-                            style={{
-                                padding: "6px 10px",
-                                backgroundColor: "#ff4d4d",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "5px",
-                                cursor: "pointer"
-                            }}
-                        >
+                    <div className="navbar-user">
+                        <span className="welcome-text">👋 {user}</span>
+                        <button className="logout-btn" onClick={handleLogout}>
                             Logout
                         </button>
                     </div>
                 ) : (
-                    <button onClick={() => setShowLogin(true)}>
+                    <button 
+                        className="signin-btn"
+                        onClick={() => setShowLogin(true)}
+                    >
                         Sign In
                     </button>
                 )}

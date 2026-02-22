@@ -1,0 +1,93 @@
+/* ================= HERO ================= */
+
+.hero {
+    margin-top: 40px;
+    padding: 140px 80px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.hero-sub {
+    margin-top: 25px;
+    font-size: 18px;
+    line-height: 1.8;
+    opacity: 0.95;
+}
+
+.hero button {
+    margin-top: 35px;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    background: white;
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.hero button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Decorative right glow */
+
+.hero::after {
+    content: "";
+    position: absolute;
+    right: -150px;
+    top: -150px;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+/* ================= SECTION SPACING ================= */
+
+.section {
+    padding: 100px 0;
+}
+
+.section-alt {
+    padding: 100px 0;
+    background: #fafafa;
+    border-radius: 30px;
+    margin-top: 60px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 100px 40px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .hero-sub {
+        font-size: 16px;
+    }
+}

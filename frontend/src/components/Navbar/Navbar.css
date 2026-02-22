@@ -1,108 +1,155 @@
+/* ================= NAVBAR ================= */
+
 .navbar {
-    padding: 20px 0px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 18px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.nabar .logo {
-    width: 150px;
+/* Logo */
+.logo {
+    width: 140px;
 }
+
+/* ================= NAV LINKS ================= */
 
 .navbar-menu {
     display: flex;
+    gap: 40px;
     list-style: none;
-    gap: 20px;
-    color: #49557e;
-    font-size: 18px;
+    font-weight: 500;
 }
+
+/* Common styling for both a & span */
+.navbar-menu a,
+.navbar-menu span {
+    text-decoration: none;
+    color: #374151;
+    position: relative;
+    padding-bottom: 6px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Hover */
+.navbar-menu a:hover,
+.navbar-menu span:hover {
+    color: #ff6b6b;
+}
+
+/* Underline animation base */
+.navbar-menu a::after,
+.navbar-menu span::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff6b6b;
+    transition: width 0.3s ease;
+}
+
+/* Hover underline */
+.navbar-menu a:hover::after,
+.navbar-menu span:hover::after {
+    width: 100%;
+}
+
+/* Active link */
+.navbar-menu a.active,
+.navbar-menu span.active {
+    color: #ff6b6b;
+}
+
+.navbar-menu a.active::after,
+.navbar-menu span.active::after {
+    width: 100%;
+}
+
+/* ================= RIGHT SECTION ================= */
 
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 25px;
 }
 
-.navbar button {
-    background: transparent;
-    font-size: 16px;
-    color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition-property: 0.3s;
-}
-
-.navbar button:hover {
-    background-color: #fff4f2;
-}
-
-.navbar .active {
-    padding-bottom: 2px;
-    border-bottom: 2px solid #49557e;
-}
-
-.navbar li {
-    cursor: pointer;
-}
-
-.navbar-search-icon {
+/* Cart */
+.cart-icon {
     position: relative;
 }
 
-.navbar-search-icon .dot {
+.cart-icon img {
+    width: 24px;
+    cursor: pointer;
+}
+
+.cart-dot {
     position: absolute;
-    min-width: 10px;
-    min-height: 10px;
-    background-color: tomato;
-    border-radius: 5px;
-    top: -8px;
-    right: -8px;
+    width: 10px;
+    height: 10px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    top: -5px;
+    right: -5px;
 }
 
-@media (max-width:1050px) {
-    .navbar .logo {
-        width: 140px;
-    }
+/* ================= USER SECTION ================= */
 
-    .navbar-menu {
-        gap: 20px;
-        font-size: 17px;
-    }
-    .navbar-right{
-        gap: 30px;
-    }
-    .navbar-right img{
-        width: 22px;
-    }
-    .navbar-right button{
-        padding: 8px 25px;
-    }
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
-@media (max-width:900px) {
-    .navbar .logo {
-        width: 120px;
-    }
 
-    .navbar-menu {
-        gap: 15px;
-        font-size: 16px;
-    }
-    .navbar-right{
-        gap: 20px;
-    }
-    .navbar-right img{
-        width: 20px;
-    }
-    .navbar-right button{
-        padding: 7px 20px;
-        font-size: 15px;
-    }
+.welcome-text {
+    font-weight: 600;
+    color: #111827;
 }
-@media (max-width:750px) {
+
+/* Logout */
+.logout-btn {
+    padding: 6px 14px;
+    border: 1px solid #ff6b6b;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+/* Signin */
+.signin-btn {
+    padding: 8px 20px;
+    border-radius: 25px;
+    border: none;
+    background: #ff6b6b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.signin-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
     .navbar-menu {
         display: none;
     }
-   
 }

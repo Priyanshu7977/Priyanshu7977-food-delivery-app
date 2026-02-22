@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar/Navbar';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder';
 import Cart from './pages/Cart/Cart';
@@ -9,47 +9,132 @@ import LoginPopup from './components/LoginPopup/LoginPopup';
 import About from './pages/About/About';
 import Delivery from './pages/Delivery/Delivery';
 import Privacy from './pages/Privacy/Privacy';
+import Landing from './pages/Landing/Landing';
+import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
 
 const App = () => {
 
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Keep user logged in after refresh
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
+    const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(savedUser.name);
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser.name);
     }
   }, []);
 
-  return (
-    <>
-      {showLogin && 
-        <LoginPopup 
-          setShowLogin={setShowLogin} 
-          setUser={setUser} 
-        />
-      }
+  const ProtectedLayout = ({ children }) => {
 
-      <div className='app'>
-        <Navbar 
-          setShowLogin={setShowLogin} 
+    if (!user) {
+      return <Navigate to="/" replace />;
+    }
+
+    return (
+      <>
+        <Navbar
+          setShowLogin={setShowLogin}
           user={user}
           setUser={setUser}
         />
+        <div className="app-container">
+          {children}
+        </div>
+        <Footer />
+      </>
+    );
+  };
 
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<PlaceOrder />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/delivery' element={<Delivery />} />
-          <Route path='/privacy' element={<Privacy />} />
-        </Routes>
-      </div>
+  return (
+    <>
+      {showLogin && (
+        <LoginPopup
+          setShowLogin={setShowLogin}
+          setUser={setUser}
+        />
+      )}
 
-      <Footer/>
+      <Routes>
+
+        <Route
+          path="/"
+          element={
+            user ? (
+              <Navigate to="/home" replace />
+            ) : (
+              <Landing
+                user={user}
+                setShowLogin={setShowLogin}
+              />
+            )
+          }
+        />
+
+        <Route
+          path="/home"
+          element={
+            <ProtectedLayout>
+              <Home />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={
+            <ProtectedLayout>
+              <Cart />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/order"
+          element={
+            <ProtectedLayout>
+              <PlaceOrder />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/success"
+          element={
+            <ProtectedLayout>
+              <OrderSuccess />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/about"
+          element={
+            <ProtectedLayout>
+              <About />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/delivery"
+          element={
+            <ProtectedLayout>
+              <Delivery />
+            </ProtectedLayout>
+          }
+        />
+
+        <Route
+          path="/privacy"
+          element={
+            <ProtectedLayout>
+              <Privacy />
+            </ProtectedLayout>
+          }
+        />
+
+      </Routes>
     </>
   );
 };

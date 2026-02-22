@@ -1,0 +1,38 @@
+/* App Layout */
+.app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* Smooth background */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+/* Better spacing between sections */
+.app > div {
+    margin-top: 50px;
+}
+
+/* Responsive Padding */
+@media (max-width: 1050px) {
+    .app {
+        padding: 0 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app {
+        padding: 0 15px;
+    }
+}
